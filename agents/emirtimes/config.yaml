@@ -1,0 +1,25 @@
+name: emirtimes
+greeting: "Emirtimes Hotel Tuzla, iyi günler. Size nasıl yardımcı olabilirim?"
+
+stt:
+  provider: deepgram
+  model: nova-3
+  # "multi" YAPMA — Türkçe tanınmıyor
+  language: tr
+
+llm:
+  provider: openai
+  model: gpt-4o-mini
+  # Doğal konuşma isteniyor ama uydurma yasak; ölçülü tutuldu.
+  temperature: 0.6
+
+tts:
+  provider: freya
+  # sesler: leyla, zeynep, alev, ali, alper, mustafa
+  voice: leyla
+  model: tts-1
+
+turn_detection: multilingual
+
+extra:
+  display_name: Emirtimes Hotel Tuzla
