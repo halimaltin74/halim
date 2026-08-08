@@ -44,6 +44,8 @@ shared/
   config.py     config.yaml + prompt.md okuma
   stack.py      sağlayıcı adı -> LiveKit plugin nesnesi
   runner.py     ortak worker entrypoint (oda bağlantısı, prewarm, CLI)
+  freya.py      Freya TTS (OpenAI uyumlu API üzerinden)
+  turkish.py    sayı -> Türkçe okunuş (tool çıktılarındaki tutarlar için)
 scripts/
   new_agent.py  iskelet üretici
 ```
