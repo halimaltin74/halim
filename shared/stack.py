@@ -30,7 +30,12 @@ def _build_llm(spec: ProviderSpec):
     if spec.provider == "openai":
         return openai.LLM(**{"model": "gpt-4o-mini", **spec.options})
     if spec.provider == "anthropic":
-        from livekit.plugins import anthropic
+        try:
+            from livekit.plugins import anthropic
+        except ImportError as e:
+            raise RuntimeError(
+                "anthropic sağlayıcısı için paket kurulu değil: uv add livekit-plugins-anthropic"
+            ) from e
 
         return anthropic.LLM(**spec.options)
     raise ValueError(f"bilinmeyen LLM sağlayıcısı: {spec.provider}")
