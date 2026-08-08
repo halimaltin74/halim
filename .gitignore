@@ -1,0 +1,13 @@
+.env
+.env.*
+!.env.example
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+.uv/
+uv.lock
+.DS_Store
+*.log
+recordings/
+.ruff_cache/

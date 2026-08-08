@@ -1,0 +1,23 @@
+name: demo-hotel
+greeting: "İyi günler, Demo Otel'e hoş geldiniz. Size nasıl yardımcı olabilirim?"
+
+stt:
+  provider: deepgram
+  model: nova-3
+  language: multi
+
+llm:
+  provider: openai
+  model: gpt-4o-mini
+  temperature: 0.4
+
+tts:
+  provider: elevenlabs
+  # Türkçe için multilingual model şart; voice_id'yi otel bazında değiştir.
+  model: eleven_turbo_v2_5
+  language: tr
+
+turn_detection: multilingual
+
+extra:
+  hotel_name: Demo Otel
