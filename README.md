@@ -53,8 +53,21 @@ Agent dosyaları LiveKit plugin'lerini doğrudan import etmez — sağlayıcı d
 
 ## Notlar
 
-- Varsayılan yığın: Deepgram nova-3 (multi) STT, GPT-4o-mini LLM, ElevenLabs
-  `eleven_turbo_v2_5` TTS, çok dilli turn detection.
-- Türkçe TTS için ElevenLabs multilingual model şart; `voice_id`'yi agent bazında
-  `config.yaml` içinde ver.
-- Telefon (SIP) tarafı henüz bağlı değil.
+- Varsayılan yığın: Deepgram nova-3 (multi) STT, GPT-4o-mini LLM, **Freya** TTS,
+  çok dilli turn detection.
+
+### Freya TTS
+
+OpenAI uyumlu API (`tts.freyavoice.ai/v1/audio/speech`), ayrı plugin yok —
+`shared/freya.py` LiveKit'in openai plugin'ini Freya'ya yönlendiriyor.
+
+- Sesler: `leyla`, `zeynep`, `alev`, `ali`, `alper`, `mustafa`
+- Model: `tts-1` (hızlı) veya `tts-1-hd` (kaliteli)
+- **Gecikme**: streaming yok, cümle tamamlanmadan ses başlamıyor. Ölçüm:
+  TTFB kısa cümlede ~1.0-1.2 sn, uzun cümlede ~1.9 sn. Telefonda her yanıttan
+  önce ~1 saniye sessizlik demek (ElevenLabs turbo'da bu ~0.3 sn).
+- `response_format` **wav'da kalmalı** — `pcm`'e geçilirse ses yarı hızda çalar
+  (openai plugin'i 24 kHz varsayıyor, Freya 48 kHz gönderiyor; doğru resample
+  sadece WAV başlığı varken oluyor).
+
+Telefon (SIP) tarafı henüz bağlı değil.

@@ -12,10 +12,11 @@ llm:
   temperature: 0.4
 
 tts:
-  provider: elevenlabs
-  # Türkçe için multilingual model şart; voice_id'yi otel bazında değiştir.
-  model: eleven_turbo_v2_5
-  language: tr
+  provider: freya
+  # sesler: leyla, zeynep, alev, ali, alper, mustafa
+  voice: leyla
+  # tts-1 daha hızlı, tts-1-hd daha kaliteli
+  model: tts-1
 
 turn_detection: multilingual
 

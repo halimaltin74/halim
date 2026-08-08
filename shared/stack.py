@@ -42,6 +42,10 @@ def _build_llm(spec: ProviderSpec):
 
 
 def _build_tts(spec: ProviderSpec):
+    if spec.provider == "freya":
+        from shared import freya
+
+        return freya.tts(**spec.options)
     if spec.provider == "elevenlabs":
         return elevenlabs.TTS(**spec.options)
     if spec.provider == "cartesia":

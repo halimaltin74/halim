@@ -25,6 +25,9 @@ uv run ruff check . && uv run ruff format .
 - Konuşma dili Türkçe: prompt'lar, greeting'ler ve kod yorumları Türkçe yazılır.
 - Sırlar `.env` içinde, repoya girmez. `.env.example` her yeni anahtar için
   güncellenir.
+- **Freya TTS'e dokunurken** `shared/freya.py` başındaki iki tuzağı oku: WAF
+  `User-Agent: OpenAI/Python` başlığını 403'lüyor, ve `response_format` wav'dan
+  çıkarsa ses yarı hızda çalar.
 
 ## Doğrulama
 
