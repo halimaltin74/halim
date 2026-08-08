@@ -10,7 +10,19 @@ from __future__ import annotations
 from typing import Any
 
 from livekit.agents import AgentSession
-from livekit.plugins import cartesia, deepgram, elevenlabs, openai, silero
+
+# turn_detector modül seviyesinde import edilmeli. Fonksiyon içinde import
+# edilirse plugin kaydolmuyor ve `download-files` model dosyalarını atlıyor;
+# sonuç olarak worker açılıyor ama gelen her çağrı "Could not find file
+# languages.json" ile düşüyor.
+from livekit.plugins import (  # noqa: F401
+    cartesia,
+    deepgram,
+    elevenlabs,
+    openai,
+    silero,
+    turn_detector,
+)
 
 from shared.config import AgentConfig, ProviderSpec
 
@@ -72,12 +84,20 @@ def _build_turn_detection(kind: str):
 
 
 def build_session(cfg: AgentConfig, **overrides: Any) -> AgentSession:
-    """Config'e göre STT/LLM/TTS/VAD yığınını kurulmuş bir AgentSession döndürür."""
-    return AgentSession(
-        stt=_build_stt(cfg.stt),
-        llm=_build_llm(cfg.llm),
-        tts=_build_tts(cfg.tts),
-        vad=silero.VAD.load(),
-        turn_detection=_build_turn_detection(cfg.turn_detection),
-        **overrides,
-    )
+    """Config'e göre STT/LLM/TTS/VAD yığınını kurulmuş bir AgentSession döndürür.
+
+    `overrides` içinde verilen her alan config'ten üretilenin yerine geçer.
+    Örneğin worker prewarm'da yüklenmiş bir VAD'ı `vad=...` ile geçirebilir;
+    o durumda modeli yeniden yüklemeyiz.
+    """
+    kwargs: dict[str, Any] = {
+        "stt": _build_stt(cfg.stt),
+        "llm": _build_llm(cfg.llm),
+        "tts": _build_tts(cfg.tts),
+        "turn_detection": _build_turn_detection(cfg.turn_detection),
+    }
+    kwargs.update(overrides)
+    kwargs.setdefault("vad", None)
+    if kwargs["vad"] is None:
+        kwargs["vad"] = silero.VAD.load()
+    return AgentSession(**kwargs)

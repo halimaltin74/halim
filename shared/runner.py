@@ -24,7 +24,6 @@ from livekit.agents import (
     Agent,
     JobContext,
     JobProcess,
-    RoomInputOptions,
     WorkerOptions,
     cli,
 )
@@ -56,12 +55,13 @@ async def entrypoint(ctx: JobContext) -> None:
 
     session = build_session(cfg, vad=ctx.proc.userdata.get("vad"))
 
+    # ctx.connect() ÇAĞIRMA. session.start(), room I/O kullanıldığında odaya
+    # kendisi bağlanıyor; ikinci bir connect çağrısı sinyal akışını bozuyor ve
+    # agent odaya girdiği halde ses yayınlayamıyor.
     await session.start(
         room=ctx.room,
         agent=agent_factory(cfg),
-        room_input_options=RoomInputOptions(),
     )
-    await ctx.connect()
 
     if cfg.greeting:
         await session.say(cfg.greeting, allow_interruptions=True)
