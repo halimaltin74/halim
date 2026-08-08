@@ -19,7 +19,8 @@ greeting: "İyi günler, {display}. Size nasıl yardımcı olabilirim?"
 stt:
   provider: deepgram
   model: nova-3
-  language: multi
+  # "multi" YAPMA — Türkçe tanınmıyor
+  language: tr
 
 llm:
   provider: openai
@@ -27,9 +28,10 @@ llm:
   temperature: 0.4
 
 tts:
-  provider: elevenlabs
-  model: eleven_turbo_v2_5
-  language: tr
+  provider: freya
+  # sesler: leyla, zeynep, alev, ali, alper, mustafa
+  voice: leyla
+  model: tts-1
 
 turn_detection: multilingual
 

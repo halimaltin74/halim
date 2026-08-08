@@ -17,9 +17,11 @@ from shared.config import AgentConfig, ProviderSpec
 
 def _build_stt(spec: ProviderSpec):
     if spec.provider == "deepgram":
-        # nova-3 çok dilli modda Türkçe'yi de kapsıyor; tek dile sabitlemek
-        # istersen config'de language: tr ver.
-        opts = {"model": "nova-3", "language": "multi", **spec.options}
+        # DİKKAT: language "multi" bırakılırsa Türkçe tanınmıyor — ölçümde
+        # nova-3/multi konuşmayı Hintçe sanıp anlamsız metin döndürdü.
+        # Dili açıkça "tr" sabitlemek şart; o haliyle nova-3 hem en doğru
+        # hem en hızlı sonucu veriyor (~0.45 sn).
+        opts = {"model": "nova-3", "language": "tr", **spec.options}
         return deepgram.STT(**opts)
     if spec.provider == "openai":
         return openai.STT(**spec.options)

@@ -4,7 +4,8 @@ greeting: "İyi günler, Demo Otel'e hoş geldiniz. Size nasıl yardımcı olabi
 stt:
   provider: deepgram
   model: nova-3
-  language: multi
+  # "multi" YAPMA — Türkçe'yi tanımıyor, bkz. README
+  language: tr
 
 llm:
   provider: openai

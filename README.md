@@ -53,8 +53,26 @@ Agent dosyaları LiveKit plugin'lerini doğrudan import etmez — sağlayıcı d
 
 ## Notlar
 
-- Varsayılan yığın: Deepgram nova-3 (multi) STT, GPT-4o-mini LLM, **Freya** TTS,
-  çok dilli turn detection.
+- Varsayılan yığın: Deepgram nova-3 (`language: tr`) STT, GPT-4o-mini LLM,
+  **Freya** TTS, çok dilli turn detection.
+
+### Deepgram STT — `language` mutlaka `tr` olmalı
+
+Üç Türkçe cümleyle ölçüldü (aynı ses dosyaları, aynı koşullar):
+
+| Ayar | Doğruluk | Gecikme |
+|---|---|---|
+| `nova-3` + `language: multi` | **kullanılamaz** — konuşmayı Hintçe sanıp anlamsız metin döndürdü | 0.3-1.7s |
+| `nova-2` + `language: tr` | iyi, 3 cümlede 1 kelime hatası | 1.2-2.3s |
+| `nova-3` + `language: tr` | **3/3 tam doğru** | 0.41-0.47s |
+
+nova-3 Türkçe'yi destekliyor ama sadece dil açıkça verilince; `multi` modunun
+dil listesinde Türkçe yok. Varsayılan bu yüzden `nova-3` + `tr`.
+
+Freya'nın kendi ASR'ı da denendi: doğruluğu benzer ve sayıları rakama çeviriyor
+(`iki bin beş yüz lira` → `2.500 lira`), ki LLM için okuması daha kolay. Ama
+dosya yükleme endpoint'i — streaming yok. Gerçek zamanlı çağrıda kullanmak için
+VAD ile parçalama gerekir ve gecikme artar, o yüzden STT'de Deepgram'da kalındı.
 
 ### Freya TTS
 
